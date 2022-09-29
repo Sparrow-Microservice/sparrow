@@ -1,0 +1,28 @@
+FROM ubuntu:18.04 AS base
+
+# Avoid confusing pip upgrade warning
+ENV PIP_DISABLE_PIP_VERSION_CHECK=true
+
+ENV DEBIAN_FRONTEND noninteractive
+RUN rm -f /etc/apt/sources.list.d/ubuntu-esm-infra-trusty.list
+
+## apt installs
+RUN apt-get update && apt-get install -y python3.7 python3-pip python3.7-dev build-essential git curl tzdata locales sudo
+
+## For pycurl
+RUN apt-get update && apt-get install -y libcurl4-openssl-dev libssl-dev
+
+## For postgres
+RUN apt-get update && apt-get install -y libpq-dev
+
+RUN echo "Asia/Shanghai" | tee /etc/timezone
+RUN dpkg-reconfigure --frontend noninteractive tzdata
+# passwordless sudo
+RUN sed -i '/^%sudo/c\%sudo ALL=(ALL:ALL) NOPASSWD:ALL' /etc/sudoers
+
+# pip 20.3.3, setuptools 51.3.3, wheel 0.36.2
+ARG version_virtualenv=20.4.0
+RUN pip3 install virtualenv==$version_virtualenv
+
+
+COPY wish_flask/docker/pip_cn.conf /etc/pip.conf

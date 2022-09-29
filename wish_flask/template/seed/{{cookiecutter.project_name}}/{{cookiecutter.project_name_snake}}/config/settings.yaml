@@ -1,0 +1,72 @@
+default:
+  #service
+  # Do not use server_name as it is flask buildin
+  service_name: {{cookiecutter.project_name_hyphen}}
+
+  API_TITLE: "{{cookiecutter.project_name_hyphen}}"
+  API_VERSION: 0.0.1
+
+  #listener
+  listener_port: {{cookiecutter.port}}
+
+  logging:
+    dynaconf_merge: true
+    loggers:
+      dynaconf:
+        level: WARNING
+      werkzeug:
+        level: INFO
+      botocore:
+        level: INFO
+      boto3:
+        level: INFO
+      urllib3:
+        level: INFO
+      elasticapm:
+        level: INFO
+      kafka:
+        level: INFO
+      gevent_wsgi:
+        level: WARNING
+      gevent_wsgi_error:
+        level: ERROR
+
+      # TD logger must end with td, e.g. td, micro.td
+      td:
+        propagate: false
+        level: INFO
+    root:
+      level: INFO
+      handlers: ['stdout_handler']
+
+  extensions:
+    dynaconf_merge: true
+    metrics:
+      enabled: true
+    apm:
+      enabled: true
+      enable_rate: 1.0
+  micro:
+    dynaconf_merge: true
+
+
+dev:
+  API_VERSION: 0.0.1
+  logging:
+    dynaconf_merge: true
+    loggers: {}
+    root:
+      level: DEBUG
+  extensions:
+    dynaconf_merge: true
+  micro:
+    dynaconf_merge: true
+
+prod:
+  API_VERSION: 0.0.1
+  # Disable openapi uri for prod env
+  OPENAPI_URL_PREFIX:
+  extensions:
+    dynaconf_merge: true
+  micro:
+    dynaconf_merge: true

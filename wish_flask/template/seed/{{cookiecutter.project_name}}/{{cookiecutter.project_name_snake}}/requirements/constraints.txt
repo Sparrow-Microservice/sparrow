@@ -1,0 +1,10 @@
+# Constraints if airflow is installed
+werkzeug<1.0
+jinja2<2.12.0
+python-slugify<5.0
+click<8.0
+PyJWT<2.0
+docutils<0.16
+urllib3<1.26
+apispec>=4.0
+marshmallow>=3.0

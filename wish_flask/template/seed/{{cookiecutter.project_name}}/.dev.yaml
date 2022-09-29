@@ -1,0 +1,46 @@
+# This is the default dev tool configuration for Wish micro projects.
+#
+# More information about the dev tool can be found on its project page at
+# https://github.com/wish/dev or you can reach out on #container-eng
+#
+# If you would like to be able to control your containers outside of project
+# directory, you can set the DEV_CONFIG environment variable to the path of this file,
+# i.e., export DEV_CONFIG=<project_dir>/.dev.yaml
+
+log:
+  level: "info"
+
+image_prefix: "{{cookiecutter.project_name_hyphen}}"
+
+projects:
+  {{cookiecutter.project_name_hyphen}}:
+    docker_compose_files:
+      - "ci/dev/service/docker-compose.yml"
+    depends_on: ["micro-net"]
+  mongo:
+    docker_compose_files:
+      - "ci/dev/mongo/docker-compose.yml"
+    depends_on: ["micro-net"]
+  pg:
+    docker_compose_files:
+      - "ci/dev/pg/docker-compose.yml"
+    depends_on: ["micro-net"]
+
+networks:
+  # have dev create the app-net network. To use it, make sure to include it as
+  # a a dependency for your project.
+  micro-net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.100.0/24
+
+# We're using some privately hosted images, so login to the registries so we
+# can pull them down.
+registries:
+    dev-registry:
+      url: "https://registry-gitlab.i.wish.com"
+      username: "gitlab-dev-token-01"
+      password: "sVCAszxGbUUpiZVbQzya"
+      continue_on_failure: True

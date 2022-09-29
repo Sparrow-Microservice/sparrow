@@ -1,0 +1,7 @@
+# CODEOWNERS file is monitored by infra.
+.github/CODEOWNERS @ContextLogic/cn-infra-dev @ContextLogic/cn-framework
+
+# By default, all source codes should be tested and approved by QA before merging to master.
+# Please add other owners afterwards.
+{{cookiecutter.project_name_snake}}/ @ContextLogic/cn-qa
+

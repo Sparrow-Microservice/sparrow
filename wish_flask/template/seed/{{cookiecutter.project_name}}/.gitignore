@@ -1,0 +1,106 @@
+# Don't track files with the following extentions.
+*~
+*.o
+*.lo
+*.pyc
+*.e4p
+*.cbp
+*.layout
+*.log
+._*
+
+tags
+tags.lock
+tags.temp
+.tags
+*.pyo
+*.swp
+*.swo
+
+# i18n banel compiled files
+*.mo
+
+# for people who uses eclipse.
+.settings/*
+.project
+.pydevproject
+.metadata
+
+# for people who use visual studio code
+.vscode
+
+# pip install 'src' folder at this root..
+/src
+# ..and for any subproject under root
+*/src
+# ..but allows src directory under go/ and elsewhere
+
+# for modelgen
+newmodels
+
+# for sass/css
+.sass-cache
+
+.commit
+
+# for Mac users
+.DS_Store
+
+# Xcode user settings
+xcuserdata/
+
+# For downloaded production keys
+keys/
+
+# In case you want to configure pylint (or link to .arcpylint_rcfile)
+.pylintrc
+
+/.idea/workspace.xml
+/.idea/vcs.xml
+/.idea/modules.xml
+/.idea/clroot.iml
+/.idea
+.idea
+/.vscode
+local.properties
+
+# nodejs modules
+node_modules/
+
+# lockfile
+**/package-lock.json
+
+
+# Ignore v0 Dev container build cache
+# See github.com/ContextLogic/dev
+.cache
+.npm
+.config
+
+
+# Ignore virtualenv directory
+venv
+.env
+.python-version
+HEAD_SHA1
+
+# ignore database file by hypothesis lib
+**/.hypothesis/*
+
+# ignore portkey folder as its used to transfer files from dev container
+/portkey
+
+# ignore coverage data file
+.coverage
+**/coverage_report
+
+
+# ignore .dobi which is used for storing the time of last docker build
+.dobi
+
+
+# ignore cat report worker lock file
+.lock_file.tmp
+
+dist
+*.egg-info

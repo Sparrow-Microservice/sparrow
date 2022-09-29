@@ -1,0 +1,4 @@
+# Please uncomment the following line if you have wishflow installed,
+# as well as adding "--use-deprecated=legacy-resolver" when "pip install".
+#-c constraints.txt
+wish-flask[metrics,prod,apm,sentry]=={{cookiecutter.version}}

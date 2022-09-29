@@ -1,0 +1,45 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.2.0
+    hooks:
+      # Simply check whether files parse as valid python.
+      - id: check-ast
+
+      # Attempts to load all json files to verify syntax.
+      - id: check-json
+
+      # Check for files that contain merge conflict strings.
+      - id: check-merge-conflict
+
+      # Attempts to load all yaml files to verify syntax.
+      - id: check-yaml
+
+      # Checks for the existence of AWS secrets that you have set up with the AWS CLI.
+      # The following arguments are available:
+      # --credentials-file CREDENTIALS_FILE - additional AWS CLI style configuration file in a non-standard location to fetch configured credentials from. Can be repeated multiple times.
+      # --allow-missing-credentials - Allow hook to pass when no credentials are detected.
+      - id: detect-aws-credentials
+
+      # This hook replaces double quoted strings with single quoted strings.
+      - id: double-quote-string-fixer
+
+      # Add # -*- coding: utf-8 -*- to the top of python files.
+        #
+        #To remove the coding pragma pass --remove (useful in a python3-only codebase)
+      - id: fix-encoding-pragma
+
+      # Assert that files in tests/ end in _test.py.
+        #
+        #Use args: ['--django'] to match test*.py instead.
+      - id: name-tests-test
+
+      # Trims trailing whitespace.
+      - id: trailing-whitespace
+
+      # Makes sure files end in a newline and only a newline.
+      - id: end-of-file-fixer
+
+      # Prevent giant files from being committed.
+      - id: check-added-large-files

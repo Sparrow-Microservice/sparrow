@@ -1,0 +1,112 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{cookiecutter.project_name_hyphen}}
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: business
+  source:
+    repoURL: git@github.com:ContextLogic/wish-helm-chart.git
+    path: {{cookiecutter.project_name_hyphen}}-{{cookiecutter.project_version}}
+    targetRevision: charts
+    helm:
+      values: |
+        fullnameOverride: {{cookiecutter.project_name_hyphen}}
+        chartName: {{cookiecutter.project_name_hyphen}}
+        version: {{cookiecutter.project_version}}
+        appVersion: {{cookiecutter.project_version}}
+        wishAppLabel: {{cookiecutter.project_name_hyphen}}
+        image:
+          repository: harbor.infra.wish-cn.com/wish/{{cookiecutter.project_name_hyphen}}/api
+          tag: <tag>
+          pullPolicy: IfNotPresent
+        imagePullSecrets: []
+        configMaps: []
+        pvc: []
+        deployments:
+        - name: server
+          replicaCount: 1
+          command:
+          - /bin/bash
+          - -c
+          - "/production/{{cookiecutter.project_name}}/current/{{cookiecutter.project_name}}/bin/entrypoint-api.sh"
+          args: []
+          ports:
+          - name: http
+            containerPort: {{cookiecutter.port}}
+            protocol: TCP
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 200m
+              memory: 256Mi
+          liveness:
+            httpGet:
+              path: /api/health
+              port: http
+          readiness:
+            httpGet:
+              path: /api/health
+              port: http
+          env:
+          - name: FLASK_ENV
+            value: dev
+          envFrom: []
+          podAnnotations:
+            co.elastic.logs/enabled: "true"
+            prometheus.io/scrape: "true"
+            prometheus.io/port: "8888"
+          podSecurityContext: {}
+          securityContext: {}
+          nodeSelector: {}
+          tolerations: []
+          affinity: {}
+          volumeMounts: []
+          volumes: []
+        services:
+        - name: server
+          type: ClusterIP
+          ports:
+          - name: http
+            port: 80
+            targetPort: http
+            protocol: TCP
+          annotations:
+            hermes.wish.com/service-name: {{cookiecutter.project_name_hyphen}}
+          deploymentRef: server
+        serviceAccount:
+          create: false
+          annotations: {}
+          name: ""
+        hpa: []
+        ingress:
+          enabled: true
+          className: nginx
+          annotations:
+            nginx.ingress.kubernetes.io/ssl-redirect: "false"
+            nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
+          hosts:
+          - host: {{cookiecutter.project_name_hyphen}}.k8sdev.bjs.i.wish.com
+            paths:
+            - path: /
+              pathType: Prefix
+            serviceRef: server
+            servicePort: 80
+          tls: []
+        cronjobs: []
+  destination:
+    name: bjs-eks-dev
+    namespace: {{cookiecutter.namespace}}
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+    syncOptions:
+    - ApplyOutOfSyncOnly=true
+    - PruneLast=true
+    - RespectIgnoreDifferences=true
+
