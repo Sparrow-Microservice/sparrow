@@ -21,3 +21,10 @@ def get_secrets_files():
 def get_mongodb_secrets_file():
     secrets_dir = os.environ.get("WISH_FLASK_SECRETS_DIR", "/opt/vault/secrets")
     return secrets_dir
+
+
+def get_builtin_config():
+    """
+    Get builtin config files. Now only support settings.yaml
+    """
+    return server_config

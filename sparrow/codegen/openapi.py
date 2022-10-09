@@ -3,11 +3,9 @@ from dataclasses import dataclass
 
 from apispec.yaml_utils import dict_to_yaml
 
-from sparrow.base.api import WishApi
 from collections import OrderedDict
 
 from sparrow.lib.py_enum import PyEnumMixin
-from sparrow.log.meta import LoggingMixin
 
 
 @dataclass
@@ -44,7 +42,7 @@ class ClientType(PyEnumMixin):
     )
 
 
-class OASGen(LoggingMixin):
+class OASGen(object):
 
     spec_order = ['openapi', 'info', 'servers', 'tags', 'paths', 'components', 'security', 'externalDocs']
 

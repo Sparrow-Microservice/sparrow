@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "sparrow-python"
+version = "0.1.0"
+description = ""
+authors = ["shen <goodstudyQAQ@163.com>"]
+readme = "README.md"
+packages = [{include = "sparrow"}]
+
+[tool.poetry.dependencies]
+python = ">=3.7"
+
+
+[[tool.poetry.source]]
+name = "wish"
+url = "http://pypicloud.bjs.i.wish.com/pypi/"
+default = false
+secondary = false
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

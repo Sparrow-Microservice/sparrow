@@ -13,8 +13,3 @@ class LoggingMixinMeta(type):
         )
         return cls._log
 
-
-class LoggingMixin(six.with_metaclass(LoggingMixinMeta)):
-    @property
-    def logger(self):
-        return self.__class__.logger

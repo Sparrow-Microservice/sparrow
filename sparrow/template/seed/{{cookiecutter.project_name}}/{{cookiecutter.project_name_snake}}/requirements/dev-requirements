@@ -1,4 +1,0 @@
--r ./pip-requirements
-
-wish-flask[dev]=={{cookiecutter.version}}
-pytest==6.2.4
