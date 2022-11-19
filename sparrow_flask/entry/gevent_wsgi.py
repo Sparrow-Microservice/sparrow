@@ -1,7 +1,5 @@
 from gevent import monkey, getcurrent
 monkey.patch_all()
-from sparrow.utils.gevent_utils import patch_psycopg2
-patch_psycopg2()
 from gevent.pywsgi import WSGIServer, WSGIHandler
 from gevent.signal import signal as gsignal
 
