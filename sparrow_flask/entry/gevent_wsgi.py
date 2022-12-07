@@ -112,7 +112,8 @@ class ServerRunner(object):
             server._stop_event.set()
 
         # Gracefully shutdown for SIGTERM
-        gsignal(signal.SIGTERM, shutdown)
+        # It will raise `AttributeError` in Windows.
+        # gsignal(signal.SIGTERM, shutdown)
 
         server.serve_forever()
 
