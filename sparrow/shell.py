@@ -5,7 +5,7 @@ from typing import Union, Type, List
 
 from IPython.terminal.embed import InteractiveShellEmbed
 
-from sparrow_flask.base import Sparrow
+from sparrow.base import Sparrow
 
 
 class VariableCollector(object):

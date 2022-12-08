@@ -1,4 +1,4 @@
-from sparrow_flask.base import Blueprint
+from sparrow.base import Blueprint
 from dataclasses import dataclass
 
 hello_blp = Blueprint('hello', __name__, url_prefix='/api/hello', description='Operation on hello')

@@ -1,5 +1,5 @@
-from sparrow_flask.creation import create_app
-from sparrow_flask.blueprints.hello import hello_blp
+from sparrow.creation import create_app
+from sparrow.blueprints.hello import hello_blp
 
 app = create_app(__name__)
 
