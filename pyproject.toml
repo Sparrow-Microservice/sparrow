@@ -8,7 +8,6 @@ packages = [{include = "sparrow"}]
 
 [tool.poetry.dependencies]
 python = "^3.7"
-flask = "^2.2.2"
 dynaconf = "^3.1.11"
 flask-smorest = "^0.40.0"
 marshmallow-dataclass = "^8.5.10"

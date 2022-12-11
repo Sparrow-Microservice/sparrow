@@ -43,3 +43,5 @@ AfterRequestCallable = t.Union[
     t.Callable[[ResponseClass], ResponseClass],
     t.Callable[[ResponseClass], t.Awaitable[ResponseClass]],
 ]
+
+T_route = t.TypeVar("T_route", bound=RouteCallable)
