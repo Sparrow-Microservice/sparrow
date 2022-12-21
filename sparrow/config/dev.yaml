@@ -1,6 +1,0 @@
-development:
-  dynaconf_merge: true
-  DEBUG: true
-  service_name: micro_flask222
-
-  API_TITLE: micro_flask222

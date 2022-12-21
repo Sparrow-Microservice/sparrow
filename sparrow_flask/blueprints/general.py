@@ -1,7 +1,7 @@
-from sparrow.base.blueprint import Blueprint
+from sparrow_flask.base.blueprint import Blueprint
 
-from sparrow.utils.os_utils import read_version
-from sparrow.utils.request_utils import log_request_rate
+from sparrow_flask.utils.os_utils import read_version
+from sparrow_flask.utils.request_utils import log_request_rate
 
 general_bp = Blueprint('general', __name__, url_prefix='/api')
 
