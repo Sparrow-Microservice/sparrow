@@ -31,8 +31,10 @@ class Sparrow(Flask):
     def _register_buildin_bps(self):
         self.register_blueprint(general_bp)
 
-    def register_api(self, blueprint: "Blueprint", **options: t.Any) -> None:
+    def register_route(self, blueprint: "Blueprint", **options: t.Any) -> None:
         self.api.register_blueprint(blueprint, **options)
+
+
 
     def before_close(self, f):
         """Registers a function to run before the application is close gracefully.
