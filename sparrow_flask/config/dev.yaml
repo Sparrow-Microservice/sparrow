@@ -1,0 +1,3 @@
+dev:
+  dynaconf_merge: true
+  API_TITLE: micro_dev_flask

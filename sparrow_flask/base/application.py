@@ -1,6 +1,12 @@
 # -*- coding: utf-8 -*-
 from flask import Flask
 from sparrow_flask.blueprints.general import general_bp
+from flask_smorest import Api
+
+import typing as t
+
+if t.TYPE_CHECKING:  # pragma: no cover
+    from flask import Blueprint
 
 
 class Sparrow(Flask):
@@ -8,26 +14,25 @@ class Sparrow(Flask):
     def __init__(self,
                  *args,
                  **kwargs):
-        """WishFlaskApplication
-
-        :param name: The name of the application package.
-        :param import_modules: A list of strings or modules.
-            All listed modules will be automatically imported for resource collection.
-        :param args: flask args
-        :param kwargs: flask kwargs
-        """
         super(Sparrow, self).__init__(*args, **kwargs)
 
         self.before_close_funcs = []
         self.before_kill_funcs = []
 
-        self.setups()
+        self.api: Api = Api()
 
     def setups(self):
         self._register_buildin_bps()
+        self._init_buildin_extensions()
+
+    def _init_buildin_extensions(self):
+        self.api.init_app(self)
 
     def _register_buildin_bps(self):
         self.register_blueprint(general_bp)
+
+    def register_api(self, blueprint: "Blueprint", **options: t.Any) -> None:
+        self.api.register_blueprint(blueprint, **options)
 
     def before_close(self, f):
         """Registers a function to run before the application is close gracefully.

@@ -1,13 +1,17 @@
 [tool.poetry]
-name = "sparrow-python"
+name = "sparrow-flask"
 version = "0.1.0"
 description = ""
 authors = ["shen <goodstudyQAQ@163.com>"]
 readme = "README.md"
-packages = [{include = "sparrow"}]
+packages = [{include = "sparrow_flask"}]
 
 [tool.poetry.dependencies]
 python = ">=3.7"
+flask-smorest = "^0.40.0"
+marshmallow-dataclass = "^8.5.10"
+gevent = "^22.10.2"
+dynaconf = "^3.1.11"
 
 
 [build-system]

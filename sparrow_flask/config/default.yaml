@@ -1,0 +1,22 @@
+default:
+  #service
+  # Do not use server_name as it is flask buildin
+  service_name: micro_flask
+
+  API_TITLE: micro_flask
+  API_VERSION: 0.0.1
+
+  #listener
+  listener_host: 0.0.0.0
+  listener_port: 8888
+
+  # flask_smorest
+  OPENAPI_VERSION: 3.0.2
+  OPENAPI_URL_PREFIX: /openapi
+  OPENAPI_SWAGGER_UI_PATH: /swagger
+  OPENAPI_SWAGGER_UI_URL: https://cdn.jsdelivr.net/npm/swagger-ui-dist@3.46.0/
+  OPENAPI_REDOC_PATH: /redoc
+  OPENAPI_REDOC_URL: https://cdn.jsdelivr.net/npm/redoc@next/bundles/redoc.standalone.js
+
+  # flask
+  PROPAGATE_EXCEPTIONS: false

@@ -30,7 +30,6 @@ class Blueprint(_Blueprint):
     def arguments(self, data_clz, *args, **kwargs):
         base_schema = kwargs.pop('base_schema', ma.Schema)
         schema = self._data_clz_to_schema(data_clz, base_schema=base_schema)
-        kwargs.setdefault('unknown', ma.EXCLUDE)
         return super().arguments(schema, *args, **kwargs)
 
     def response(
