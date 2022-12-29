@@ -1,15 +1,18 @@
 # -*- coding: utf-8 -*-
 from flask import Flask
 from sparrow_flask.blueprints.general import general_bp
+from sparrow_flask.base.scaffold import Scaffold
 from flask_smorest import Api
-
+import marshmallow as ma
 import typing as t
 
-if t.TYPE_CHECKING:  # pragma: no cover
-    from flask import Blueprint
+from sparrow_flask.base import Blueprint
+from flask.scaffold import T_route
+from flask.app import ft
 
 
-class Sparrow(Flask):
+class Sparrow(Flask, Scaffold):
+    _blp: "Blueprint" = None
 
     def __init__(self,
                  *args,
@@ -20,6 +23,8 @@ class Sparrow(Flask):
         self.before_kill_funcs = []
 
         self.api: Api = Api()
+        self._is_register_blp = False
+        self._api_ready = False
 
     def setups(self):
         self._register_buildin_bps()
@@ -27,14 +32,86 @@ class Sparrow(Flask):
 
     def _init_buildin_extensions(self):
         self.api.init_app(self)
+        self._api_ready = True
 
     def _register_buildin_bps(self):
         self.register_blueprint(general_bp)
+        self.__class__._blp = Blueprint(self.config['service_name'], __name__)
 
     def register_route(self, blueprint: "Blueprint", **options: t.Any) -> None:
+        options.setdefault("_from_blp", True)
         self.api.register_blueprint(blueprint, **options)
 
+    @classmethod
+    def arguments(cls, data_clz, *args, **kwargs):
+        return cls._blp.arguments(data_clz, *args, **kwargs)
 
+    @classmethod
+    def response(
+            cls, status_code=200, data_clz=None, *, description=None,
+            example=None, examples=None, headers=None, base_schema=ma.Schema
+    ):
+        return cls._blp.response(status_code, data_clz, description=description, example=example, examples=examples,
+                                 headers=headers, base_schema=base_schema)
+
+    def GET(self, rule, view_func, **options):
+        """Add a rule for a GET request. This is a shortcut for
+        :meth:`add_url_rule` with ``
+        """
+        options.setdefault("methods", ("GET",))
+        self.__class__._blp.route(rule, **options)(view_func)
+
+    def POST(self, rule, view_func, **options):
+        """Add a rule for a POST request. This is a shortcut for
+        :meth:`add_url_rule` with ``
+        """
+        options.setdefault("methods", ("POST",))
+        self.__class__._blp.route(rule, **options)(view_func)
+
+    def PUT(self, rule, view_func, **options):
+        """Add a rule for a PUT request. This is a shortcut for
+        :meth:`add_url_rule` with ``
+        """
+        options.setdefault("methods", ("PUT",))
+        self.__class__._blp.route(rule, **options)(view_func)
+
+    def DELETE(self, rule, view_func, **options):
+        """Add a rule for a DELETE request. This is a shortcut for
+        :meth:`add_url_rule` with ``
+        """
+        options.setdefault("methods", ("DELETE",))
+        self.__class__._blp.route(rule, **options)(view_func)
+
+    def PATCH(self, rule, view_func, **options):
+        """Add a rule for a PATCH request. This is a shortcut for
+        :meth:`add_url_rule` with ``
+        """
+        options.setdefault("methods", ("PATCH",))
+        self.__class__._blp.route(rule, **options)(view_func)
+
+    def OPTIONS(self, rule, view_func, **options):
+        """Add a rule for a OPTIONS request. This is a shortcut for
+        :meth:`add_url_rule` with ``
+        """
+        options.setdefault("methods", ("OPTIONS",))
+        self.__class__._blp.route(rule, **options)(view_func)
+
+    def HEAD(self, rule, view_func, **options):
+        """Add a rule for a HEAD request. This is a shortcut for
+        :meth:`add_url_rule` with ``
+        """
+        options.setdefault("methods", ("HEAD",))
+        self.__class__._blp.route(rule, **options)(view_func)
+
+    def Any(self, rule, view_func, **options):
+        """Add a rule for a Any request. This is a shortcut for
+        :meth:`add_url_rule` with ``
+        """
+        options.setdefault("methods", ("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD"))
+        self.__class__._blp.route(rule, **options)(view_func)
+
+    def Route(self, rule: str, f: t.Callable, **options: t.Any) -> t.Callable[[T_route], T_route]:
+        return self.__class__._blp.route(rule, **options)(f)
 
     def before_close(self, f):
         """Registers a function to run before the application is close gracefully.
@@ -66,3 +143,17 @@ class Sparrow(Flask):
         """
         for func in self.before_kill_funcs:
             func()
+
+    def run(
+            self,
+            host: t.Optional[str] = None,
+            port: t.Optional[int] = None,
+            debug: t.Optional[bool] = None,
+            load_dotenv: bool = True,
+            **options: t.Any,
+    ) -> None:
+        # Need register blueprint before run
+        if not self._is_register_blp:
+            self.register_route(self.__class__._blp)
+            self._is_register_blp = True
+        super(Sparrow, self).run(host, port, debug, load_dotenv, **options)

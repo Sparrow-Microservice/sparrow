@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-import marshmallow_dataclass as mad
 import marshmallow as ma
 from flask_smorest import Blueprint as _Blueprint
+from sparrow_flask.base.scaffold import Scaffold
 
 
-class Blueprint(_Blueprint):
+class Blueprint(_Blueprint, Scaffold):
     """Blueprint that registers info in API documentation"""
 
     def __init__(self, *args, **kwargs):
@@ -16,16 +16,6 @@ class Blueprint(_Blueprint):
         The first is required permissions, the second is required roles.
         """
         super().__init__(*args, **kwargs)
-
-    @classmethod
-    def _data_clz_to_schema(cls, data_clz, base_schema=ma.Schema):
-        if issubclass(data_clz, ma.Schema) or isinstance(data_clz, ma.Schema):
-            # data_clz is schema
-            schema = data_clz
-        else:
-            # data_clz is object
-            schema = mad.class_schema(data_clz, base_schema)
-        return schema
 
     def arguments(self, data_clz, *args, **kwargs):
         base_schema = kwargs.pop('base_schema', ma.Schema)
