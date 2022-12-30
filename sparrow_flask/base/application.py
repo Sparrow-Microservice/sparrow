@@ -54,64 +54,8 @@ class Sparrow(Flask, Scaffold):
         return cls._blp.response(status_code, data_clz, description=description, example=example, examples=examples,
                                  headers=headers, base_schema=base_schema)
 
-    def GET(self, rule, view_func, **options):
-        """Add a rule for a GET request. This is a shortcut for
-        :meth:`add_url_rule` with ``
-        """
-        options.setdefault("methods", ("GET",))
-        self.__class__._blp.route(rule, **options)(view_func)
-
-    def POST(self, rule, view_func, **options):
-        """Add a rule for a POST request. This is a shortcut for
-        :meth:`add_url_rule` with ``
-        """
-        options.setdefault("methods", ("POST",))
-        self.__class__._blp.route(rule, **options)(view_func)
-
-    def PUT(self, rule, view_func, **options):
-        """Add a rule for a PUT request. This is a shortcut for
-        :meth:`add_url_rule` with ``
-        """
-        options.setdefault("methods", ("PUT",))
-        self.__class__._blp.route(rule, **options)(view_func)
-
-    def DELETE(self, rule, view_func, **options):
-        """Add a rule for a DELETE request. This is a shortcut for
-        :meth:`add_url_rule` with ``
-        """
-        options.setdefault("methods", ("DELETE",))
-        self.__class__._blp.route(rule, **options)(view_func)
-
-    def PATCH(self, rule, view_func, **options):
-        """Add a rule for a PATCH request. This is a shortcut for
-        :meth:`add_url_rule` with ``
-        """
-        options.setdefault("methods", ("PATCH",))
-        self.__class__._blp.route(rule, **options)(view_func)
-
-    def OPTIONS(self, rule, view_func, **options):
-        """Add a rule for a OPTIONS request. This is a shortcut for
-        :meth:`add_url_rule` with ``
-        """
-        options.setdefault("methods", ("OPTIONS",))
-        self.__class__._blp.route(rule, **options)(view_func)
-
-    def HEAD(self, rule, view_func, **options):
-        """Add a rule for a HEAD request. This is a shortcut for
-        :meth:`add_url_rule` with ``
-        """
-        options.setdefault("methods", ("HEAD",))
-        self.__class__._blp.route(rule, **options)(view_func)
-
-    def Any(self, rule, view_func, **options):
-        """Add a rule for a Any request. This is a shortcut for
-        :meth:`add_url_rule` with ``
-        """
-        options.setdefault("methods", ("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD"))
-        self.__class__._blp.route(rule, **options)(view_func)
-
-    def Route(self, rule: str, f: t.Callable, **options: t.Any) -> t.Callable[[T_route], T_route]:
-        return self.__class__._blp.route(rule, **options)(f)
+    def route(self, rule: str, **options: t.Any) -> t.Callable[[T_route], T_route]:
+        return self.__class__._blp.route(rule, **options)
 
     def before_close(self, f):
         """Registers a function to run before the application is close gracefully.

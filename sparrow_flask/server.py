@@ -7,7 +7,7 @@ from sparrow_flask.blueprints.hello import hello_blp
 from sparrow_flask.blueprints.hello2 import hello2
 
 app.register_route(hello_blp)
-app.POST('/api/hello2', hello2)
+app.put('/api/hello2')(hello2)
 
 if __name__ == '__main__':
     app.run()
